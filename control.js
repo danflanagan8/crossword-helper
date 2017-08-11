@@ -148,9 +148,23 @@ function findAndShowMatches(){
 function findAndShowGrid(){
 
    //handles the button in the Grid Filler div (along with showSolution() )
-
    var to_fill_string = document.getElementById("to_fill").value;
-   var grid = new GridToFill( to_fill_string.split("\n") );
+   var words = to_fill_string.split("\n");
+   //remove blank lines
+   for( var i = words.length - 1; i >= 0 ; i-- ){
+      if( words[i].length === 0 ){
+        words.splice(i, 1);
+      }
+   }
+   //check that all the lines are the same length
+   for( var i = 0; i < words.length; i++ ){
+      if( words[i].length !== words[0].length ){
+        document.getElementById("solution").value = "Error: not a rectangular grid";
+        return;
+      }
+   }
+
+   var grid = new GridToFill( words );
    
    var solution = grid.getSolution( dictionary );
     
