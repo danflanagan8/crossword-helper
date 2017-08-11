@@ -165,13 +165,13 @@ function findAndShowGrid(){
    }
 
    var grid = new GridToFill( words );
+   document.getElementById("solution").value = "Working...";
+   setTimeout( function(){
+    var solution = grid.getSolution( dictionary );
+    showSolution( solution );
+    console.log( grid.solutions );
+   }, 10);
    
-   var solution = grid.getSolution( dictionary );
-    
-   showSolution( solution );
-
-   console.log( grid.solutions );
-
 }
 
 function showSolution(solution){
