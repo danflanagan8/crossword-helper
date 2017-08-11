@@ -39,20 +39,41 @@ function GridToFill( to_fill ){
    
    		//to_fill should be an array of strings that are each the same length
 
-   		//start by picking off all the words into a 1D array
+      //check_row is the row the most recent test letter was put in
+      //check_column is the column the most recent test letter was put in
+
+   		//start by picking off words into a 1D array
+      //only pick the words that haven't been checked before.
    		var words = [];
+      var start_row;
+      var end_row;
+      var start_column;
+      var end_column;
+      if( check_row === undefined ){
+        start_row = 0;
+        end_row = to_fill.length;
+      }else{
+        start_row = check_row;
+        end_row = check_row + 1;
+      }
+      if( check_column === undefined ){
+        start_column = 0;
+        end_column = to_fill[0].length;
+      }else{
+        start_column = check_column;
+        end_column = check_column + 1;
+      }
+
    
    		//first pick the rows
-   		for( var i = 0 ; i < to_fill.length ; i++ ){
+   		for( var i = start_row ; i < end_row ; i++ ){
       		var newword = "";
 			//walk through each row      
 	     	for( var j = 0 ; j < to_fill[0].length ; j++ ){
          
             	if(to_fill[i][j] == "." ){
                		if( newword != "" ){
-                      var check = false;
-                      if( i === check_row || check_row === undefined) check = true;
-               	  		if(!allUpperCase( newword )) words.push([newword, check]);
+               	  		if(!allUpperCase( newword )) words.push(newword);
                	  		newword = "";
                		}
             	} else {
@@ -61,22 +82,18 @@ function GridToFill( to_fill ){
          	}
       
       		//we're at the end of the word now. If newword isn't blank, we push it
-          var check = false;
-          if( i === check_row || check_row === undefined) check = true;
-      		if( newword != "" && !allUpperCase( newword )) words.push([newword, check]);
+      		if( newword != "" && !allUpperCase( newword )) words.push(newword);
    		}
    
    
    		//now the columns. This is clumsier. 
-   		for( var j = 0; j < to_fill[0].length; j++ ){
+   		for( var j = start_column; j < end_column; j++ ){
       		var newword = "";
       		for( var i = 0; i < to_fill.length ; i++ ) {
          
          		if(to_fill[i][j] == "." ){
              		if( newword != "" ){
-                    var check = false;
-                    if( j === check_column || check_column === undefined) check = true;
-               			if(!allUpperCase( newword )) words.push([newword, check]);
+               			if(!allUpperCase( newword )) words.push(newword);
                			newword = "";
              		}
          		} else {
@@ -84,18 +101,14 @@ function GridToFill( to_fill ){
          		}
       		}
       		//don't keep it if it's all upper case
-          var check = false;
-          if( j === check_column || check_column === undefined) check = true;
-      		if(!allUpperCase( newword )) words.push([newword, check]);
+      		if(!allUpperCase( newword )) words.push(newword);
    		}
-   
-   		//console.log(words);
-   
+      
    		//base case: grid is full (no hyphens). Is it all legal words? If so print and set foundGrid to true. If not return.
    		var gridIsFull = true;
-   		words.forEach( function(entry) {
-    	//is there a hyphen in this word?
-      		if( entry[0].indexOf("-") > -1 ){
+   		to_fill.forEach( function(row) {
+    	//is there a hyphen in this row?
+      		if( row.indexOf("-") > -1 ){
          		gridIsFull = false;  
       		}
    		});
@@ -106,7 +119,7 @@ function GridToFill( to_fill ){
       		var allLegalWords = true;
       		words.forEach( function(entry) {
          		//is there a hyphen in this word?
-         		if( !word_tree.contains( entry[0].toLowerCase())) {
+         		if( !word_tree.contains( entry.toLowerCase())) {
             		allLegalWords = false;
             		//console.log(entry + " is not a word");
             		return;//get out of dodge
@@ -136,12 +149,10 @@ function GridToFill( to_fill ){
       		var allLegalForms = true;
       		words.forEach( function(entry) {
          		//is this form in the tree
-            if( entry[1] === true ){
-           		if( !word_tree.hasMatch( findRegExp(entry[0].toLowerCase()), findPrefix(entry[0]).toLowerCase(), entry[0].length )){
-              		allLegalForms = false;
-              		//return;
-           		}
-            }
+         		if( !word_tree.hasMatch( findRegExp(entry.toLowerCase()), findPrefix(entry).toLowerCase(), entry.length )){
+            		allLegalForms = false;
+            		//return;
+         		}
       		});
    		}
 
@@ -151,7 +162,7 @@ function GridToFill( to_fill ){
       		//find the first hyphen (scan the top row, then the next row, etc. moving left to right
       		var wildCardRow = 0;
       		var wildCardColumn = 0;
-      		for( var i = 0 ; i < to_fill.length ; i++){
+      		for( var i = start_row ; i < to_fill.length ; i++){
         		if( to_fill[i].indexOf("-") > -1 ){
             		wildCardRow = i;
             		wildCardColumn = to_fill[i].indexOf("-");
