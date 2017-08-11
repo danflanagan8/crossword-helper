@@ -1,0 +1,99 @@
+body {
+   font-size: 12pt;
+   font-family: sans-serif;
+   /*background-image: url("backgroundSketch.jpg");
+   background-repeat: no-repeat;
+   background-position: center;*/
+}
+
+#content{
+ 
+   width: 650px;
+   margin:auto;
+
+}
+
+body h1{
+
+   text-align: center;
+
+}
+
+textarea {
+   font-family: monospace;
+   font-size: 16pt;
+}
+
+#dict{
+   
+   margin:auto;
+   padding: 20px;
+   width:600px;
+   background-color: #DDDDDD;
+   line-height: 30px;
+
+}
+
+#grids {
+   width: 600px;
+   padding: 20px;
+   margin:auto;
+   text-align:center;
+   background-color: white;
+   position:relative;
+}
+
+#grid_rules{
+
+	text-align:left;
+
+}
+
+#to_fill_grid {
+   margin:10px;
+   padding: 20px;
+   background-color: #880000;
+   color: white;
+   line-height: 30px;
+   display:inline-block;
+   text-align:left;
+
+}
+
+#solution_grid {
+   margin:10px;
+   padding: 20px;
+   background-color: #333333;
+   color: white;
+   line-height: 30px;
+   display:inline-block;
+   text-align:left;
+
+}
+
+#match_div{
+
+   margin:auto;
+   padding: 20px;
+   background-color: #DDDDDD;
+   line-height: 30px;
+   width:600px;
+
+}
+
+#wildWordMatches{
+
+	font-family: monospace;
+
+}
+
+#wildWord{
+
+   line-height: 20px;
+   font-size: 20px;
+   font-family: monospace;
+
+}
+
+
+
