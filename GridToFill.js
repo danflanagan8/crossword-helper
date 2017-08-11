@@ -32,9 +32,9 @@ function GridToFill( to_fill ){
    		return solution;
 	};
 
-	function findSolutionGrid( to_fill , word_tree , letters){
+	function findSolutionGrid( to_fill , word_tree , letters, check_row, check_column){
 		//this returns an array where all hyphens have been replaced with letters or null
-
+    //console.log('check ' + check_row);
    		//this version to_fill uses . for a black square and capital words aren't tested
    
    		//to_fill should be an array of strings that are each the same length
@@ -50,7 +50,9 @@ function GridToFill( to_fill ){
          
             	if(to_fill[i][j] == "." ){
                		if( newword != "" ){
-               	  		if(!allUpperCase( newword )) words.push(newword);
+                      var check = false;
+                      if( i === check_row || check_row === undefined) check = true;
+               	  		if(!allUpperCase( newword )) words.push([newword, check]);
                	  		newword = "";
                		}
             	} else {
@@ -59,7 +61,9 @@ function GridToFill( to_fill ){
          	}
       
       		//we're at the end of the word now. If newword isn't blank, we push it
-      		if( newword != "" && !allUpperCase( newword )) words.push(newword);
+          var check = false;
+          if( i === check_row || check_row === undefined) check = true;
+      		if( newword != "" && !allUpperCase( newword )) words.push([newword, check]);
    		}
    
    
@@ -70,7 +74,9 @@ function GridToFill( to_fill ){
          
          		if(to_fill[i][j] == "." ){
              		if( newword != "" ){
-               			if(!allUpperCase( newword )) words.push(newword);
+                    var check = false;
+                    if( j === check_column || check_column === undefined) check = true;
+               			if(!allUpperCase( newword )) words.push([newword, check]);
                			newword = "";
              		}
          		} else {
@@ -78,7 +84,9 @@ function GridToFill( to_fill ){
          		}
       		}
       		//don't keep it if it's all upper case
-      		if(!allUpperCase( newword )) words.push(newword);
+          var check = false;
+          if( j === check_column || check_column === undefined) check = true;
+      		if(!allUpperCase( newword )) words.push([newword, check]);
    		}
    
    		//console.log(words);
@@ -87,7 +95,7 @@ function GridToFill( to_fill ){
    		var gridIsFull = true;
    		words.forEach( function(entry) {
     	//is there a hyphen in this word?
-      		if( entry.indexOf("-") > -1 ){
+      		if( entry[0].indexOf("-") > -1 ){
          		gridIsFull = false;  
       		}
    		});
@@ -98,7 +106,7 @@ function GridToFill( to_fill ){
       		var allLegalWords = true;
       		words.forEach( function(entry) {
          		//is there a hyphen in this word?
-         		if( !word_tree.contains( entry.toLowerCase())) {
+         		if( !word_tree.contains( entry[0].toLowerCase())) {
             		allLegalWords = false;
             		//console.log(entry + " is not a word");
             		return;//get out of dodge
@@ -128,10 +136,12 @@ function GridToFill( to_fill ){
       		var allLegalForms = true;
       		words.forEach( function(entry) {
          		//is this form in the tree
-         		if( !word_tree.hasMatch( findRegExp(entry.toLowerCase()), findPrefix(entry).toLowerCase(), entry.length )){
-            		allLegalForms = false;
-            		//return;
-         		}
+            if( entry[1] === true ){
+           		if( !word_tree.hasMatch( findRegExp(entry[0].toLowerCase()), findPrefix(entry[0]).toLowerCase(), entry[0].length )){
+              		allLegalForms = false;
+              		//return;
+           		}
+            }
       		});
    		}
 
@@ -178,7 +188,7 @@ function GridToFill( to_fill ){
       		for( var i = 0; i < letters.length ; i++ ){
 				var next_to_fill = to_fill.slice(0);
         		next_to_fill[wildCardRow] = to_fill[wildCardRow].substring(0,wildCardColumn) + letters[i] + to_fill[wildCardRow].substring(wildCardColumn + 1)
-       			var possible_solution = findSolutionGrid( next_to_fill, word_tree, random_letters);
+       			var possible_solution = findSolutionGrid( next_to_fill, word_tree, random_letters, wildCardRow, wildCardColumn );
 				if( possible_solution != null) return possible_solution;
 				//if the previous statement is true, then we end up popping out of the stack
 	  		}
