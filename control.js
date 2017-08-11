@@ -5,7 +5,6 @@
 //dictionary is a global variable used by the controls
 var dictionary = new WordForest();
 
-
 //a file loading function based on http://blog.teamtreehouse.com/reading-files-using-the-html5-filereader-api
 function readInFile() {
   var fileInput = document.getElementById('fileInput');
@@ -29,11 +28,11 @@ function readInFile() {
   			putWordsIntoDictionary(wordArray);
   		}
   	
-  	    reader.readAsText(file);  
+  	  reader.readAsText(file);  
 	
-	} else {
+	  } else {
   		fileDisplayArea.innerText = "File not supported!";
-	}
+	  }
   });
 }
 
@@ -101,7 +100,7 @@ function removeWord( word ){
 
 function loadDansWords(){
 
-    ajaxCallback = putDansWordsInDictionary;
+  ajaxCallback = putDansWordsInDictionary;
 	ajaxRequest("danswordlist.txt");
 
 }
@@ -171,7 +170,6 @@ function findAndShowGrid(){
     showSolution( solution );
     console.log( grid.solutions );
    }, 10);
-   
 }
 
 function showSolution(solution){
