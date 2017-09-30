@@ -149,10 +149,12 @@ function GridToFill( to_fill ){
       		var allLegalForms = true;
       		words.forEach( function(entry) {
          		//is this form in the tree
-         		if( !word_tree.hasMatch( findRegExp(entry.toLowerCase()), findPrefix(entry).toLowerCase(), entry.length )){
-            		allLegalForms = false;
-            		//return;
-         		}
+            if(entry.length > 2){//two-letter words are assumed to be partial words
+           		if( !word_tree.hasMatch( findRegExp(entry.toLowerCase()), findPrefix(entry).toLowerCase(), entry.length )){
+              		allLegalForms = false;
+              		//return;
+           		}
+            }
       		});
    		}
 
