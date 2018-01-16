@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+   "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+   <head>
+      <title></title>
+	  <script type:"text/javascript" src="ajax.js"></script>
+      <script type:"text/javascript" src="WordTree.js"></script>
+      <script type:"text/javascript" src="WordForest.js"></script>
+      <script type:"text/javascript" src="WildCardWord.js"></script>
+      <script type:"text/javascript" src="GridToFill.js"></script>
+      <script type:"text/javascript" src="control_backwards.js"></script>
+      <link rel="stylesheet" type="text/css" href="style.css" />
+	  <link rel="stylesheet" type="text/css" href="../style.css" />
+
+   </head>
+   <body onload="loadDansWords();readInFile();">
+    
+    
+    <div id="content">
+    <a href="../index.html">Home</a>
+
+    <h1>Dan's Crossword Helper</h1>
+    <div id="dict">
+	<h1>Word List</h1>
+	  
+      Dan's word list is loaded by default.<br />
+      Or you can select your own word list <input type="file" id="fileInput"><br />
+
+	  Add or remove a word temporarily:<input type="addWord" id="addWord">
+      <button type="button" onclick="addWord(document.getElementById('addWord').value);">Add</button>
+      <button type="button" onclick="removeWord(document.getElementById('addWord').value);">Remove</button>
+    </div>
+	
+    <div id="grids">
+	  <h1>Grid Filler</h1>
+    <h3>This grid will get filled from bottom right to top left.</h3>
+	  <div id="grid_rules">
+	  Type out a rectangular grid. Use periods for black squares and hyphens for blanks.
+	  If you type a word in all caps (like AAZ below), it does not need to be in the word list. This is important if your grid contains
+	  half of a theme fill, for example. If your grid has lots of blanks (more than 20 or so), be prepared for
+	  your browser to freeze up.
+	  </div>
+	  
+      <div id="to_fill_grid">
+        <button type="button" onclick="findAndShowGrid();">fill grid</button>Grid with blanks:<br/>
+        <textarea id="to_fill" rows="15" cols="15">---.AAZ
+example
+-------
+-----..</textarea> 
+      </div>
+    
+      <div id="solution_grid">
+        Solution:<br/>
+        <textarea id="solution" rows="15" cols="15"></textarea>
+      </div>
+    </div>
+	
+    <div id="match_div">
+     <h1>Word Finder</h1>
+     Type a patten using letters and wild cards. Find matches like magic.
+     <ul>
+     	<li>Hyphen (-) is any letter</li>
+     	<li>Asterisk (*) is a vowel</li>
+     	<li>Pound Sign (#) is a consonant</li>
+    	<li>Caret (^) tests: <input type="caret" id="caret"></li>
+     	<li>Tilde (~) excludes: <input type="tilde" id="tilde"></li>
+     </ul>
+     Type pattern to match:<br/><input type="wildWord" id="wildWord"><br/>
+     <button type="button" onclick="findAndShowMatches();">Show Matches</button>
+     
+
+     <pre id="wildWordMatches"></pre>
+     
+    </div>
+     
+     
+
+  </div>
+   
+      
+   </body>
+</html>
