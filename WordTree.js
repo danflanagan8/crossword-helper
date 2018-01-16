@@ -39,15 +39,13 @@ function WordTree( word ){
 //remove method
 /////////////////////
 
-//it doesn't really remove anything. It "paints over" it.
-
 	this.remove = function( word_to_remove ){
 	
 	  if( word_to_remove < this.word){
 	
          if( this.left != null && word_to_remove == this.left.word  ){
-	     	//paint over this.left.word
-		 	this.left.word = this.word;
+	     	
+		 	this.left = this.left.mergeLeftAndRight();
 		 	return;
 		 }else{
 		    if(this.left != null ) this.left.remove( word_to_remove );
@@ -58,7 +56,7 @@ function WordTree( word ){
 	     
 	     if( this.right != null && word_to_remove == this.right.word  ){
 	     	//paint over this.left.word
-		 	this.right.word = this.word;
+		 	this.right = this.right.mergeLeftAndRight();
 		 	return;
 		 }else{
 		    if(this.right != null ) this.right.remove( word_to_remove );
@@ -124,6 +122,47 @@ function WordTree( word ){
       
    };
 
+   this.toArray = function(){
+   	 if(this.left === null && this.right === null){
+   	 	return [this.word];
+   	 }else if( this.left === null ){
+   	 	return [this.word].concat(this.right.toArray());
+   	 }else if( this.right === null ){
+   	 	return [this.word].concat(this.left.toArray());
+   	 }
+   	 
+     return [this.word].concat(this.left.toArray(), this.right.toArray());
+   }
+
+   this.merge = function( other_tree ){
+   	 if(other_tree === null){
+   	 	return this;
+   	 }
+     var this_array = this.toArray();
+     var that_array = other_tree.toArray();
+     var all_words = this_array.concat(that_array);
+     all_words = randomize(all_words);
+     console.log(all_words);
+     var new_tree = new WordTree(all_words[0]);
+     for(var i = 1; i < all_words.length; i++){
+     	new_tree.add(all_words[i]);
+     }
+     return new_tree;
+   }
+
+   //A function used when removing a word.
+   this.mergeLeftAndRight = function(){
+     if( this.left === null && this.right === null){
+     	return null;
+     }else if( this.left === null){
+     	return this.right;
+     }else if( this.right === null){
+     	return this.left;
+     }else{
+     	return this.left.merge(this.right);
+     }
+   }
+
 /////////////////////////
 // hasMatch  method
 //////////////////////////
@@ -168,5 +207,17 @@ function WordTree( word ){
       return false;
 
    };
+
+   function randomize(array){
+      for( var i = 0; i < array.length - 1; i++){
+		  var indexToPut = i;
+		  var indexPulledFromHat = Math.floor( Math.random() * (array.length - i)) + i;
+		  //swap
+		  var holder = array[i];
+		  array[i] = array[indexPulledFromHat];
+		  array[indexPulledFromHat] = holder;
+	  }
+	  return array;
+   }
 }
 
