@@ -142,7 +142,6 @@ function WordTree( word ){
      var that_array = other_tree.toArray();
      var all_words = this_array.concat(that_array);
      all_words = randomize(all_words);
-     console.log(all_words);
      var new_tree = new WordTree(all_words[0]);
      for(var i = 1; i < all_words.length; i++){
      	new_tree.add(all_words[i]);
