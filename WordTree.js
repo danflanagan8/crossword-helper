@@ -128,10 +128,10 @@ function WordTree( word ){
    	 }else if( this.left === null ){
    	 	return [this.word].concat(this.right.toArray());
    	 }else if( this.right === null ){
-   	 	return [this.word].concat(this.left.toArray());
+   	 	return this.left.toArray().concat([this.word]);
    	 }
    	 
-     return [this.word].concat(this.left.toArray(), this.right.toArray());
+     return this.left.toArray().concat([this.word], this.right.toArray());
    }
 
    this.merge = function( other_tree ){
